@@ -12,7 +12,7 @@ export default {
   },
   isSmallDevice: width < 375,
   fonts: {
-    h1: 32,
+    h1: 28,
     h2: 24,
     h3: 18,
     h4: 16,
