@@ -1,12 +1,13 @@
+import { useNavigation } from '@react-navigation/core'
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import Avatar from '../Avatar'
 import styles from './styles'
 
 export default function index({ color }: { color: string }) {
-
+    const { navigate } = useNavigation()
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity onPress={() => navigate("Chat")} style={styles.container}>
             <Avatar size={60} style={{ backgroundColor: color }} />
             <View style={styles.dataContainer}>
                 <View style={styles.block}>
