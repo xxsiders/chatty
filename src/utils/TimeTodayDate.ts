@@ -1,6 +1,6 @@
 import moment from "moment";
 
-const TimeTodayDate = (date: Date) => {
+const TimeTodayDate = (date: Date | number) => {
     moment.locale('en', {
         'calendar': {
             'lastDay': 'D MMMM',
