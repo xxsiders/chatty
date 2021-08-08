@@ -1,14 +1,14 @@
 import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
 import { FlatList, TouchableOpacity } from 'react-native'
+import { User } from '../../../Types'
 import Colors from '../../constants/Colors'
 import GenerateColors from '../../utils/GenerateColors'
-import styles from './styles'
 import Avatar from '../Avatar'
-import { User } from '../../../Types'
+import styles from './styles'
 
 
-export default function index({ data }: { data: Array<User> }) {
+export default function index({ data, createChatRoom }: { data: Array<User>, createChatRoom: (id: string) => void }) {
     const avatarColors = GenerateColors(data.length)
     const renderUser = ({ item, index }: { item: any, index: number }) => {
         if (item.searchIcon) {
@@ -16,7 +16,9 @@ export default function index({ data }: { data: Array<User> }) {
                 <Ionicons name='search' size={24} color={Colors.white} />
             </TouchableOpacity>
         }
-        return <Avatar style={{ marginHorizontal: 4, backgroundColor: avatarColors[index] }} uri={item.avatar} size={45} />
+        return <TouchableOpacity onPress={() => createChatRoom(item)} >
+            <Avatar style={{ marginHorizontal: 4, backgroundColor: avatarColors[index] }} uri={item.avatar} size={45} />
+        </TouchableOpacity>
     }
 
     return (
