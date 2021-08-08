@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { firebase, currentUserID } from '../../../firebaseConfig'
+import { useRefresh } from "../../hooks/RefreshProvider";
 
 const index = (Com: React.ComponentType<any>) => {
     const wrapper = (props: any) => {
         const [chatList, setChatList]: any = useState([])
         const [usersList, setUsersList]: any = useState([])
         const [loading, setLoading] = useState(true)
+        const { refreshing, setrefreshing }: any = useRefresh()
 
         const fetchChatList = async () => {
-
             const response = await firebase.firestore().collection('chatRoom').orderBy('lastMessageDate', 'desc').where('users', 'array-contains', currentUserID).get()
             response.docs.map(async (item: any) => {
                 const partnerID = item.data().users.filter((user: string) => user !== currentUserID)[0]
@@ -20,6 +21,7 @@ const index = (Com: React.ComponentType<any>) => {
                 setChatList((prevPosts: any) => [...prevPosts, newData])
             })
             setLoading(false)
+            setrefreshing(false)
         }
 
         const fetchUsersList = async () => {
@@ -35,6 +37,13 @@ const index = (Com: React.ComponentType<any>) => {
             fetchChatList()
             fetchUsersList()
         }, [])
+
+        useEffect(() => {
+            if (refreshing) {
+                setChatList([])
+                fetchChatList()
+            }
+        }, [refreshing])
 
         return <Com
             {...props}
