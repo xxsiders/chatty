@@ -4,14 +4,16 @@ import { BubbleProps, Composer, GiftedChat, InputToolbar, InputToolbarProps, Sen
 import Colors from '../../constants/Colors'
 import ChatMessage from '../ChatMessage'
 import styles from './styles'
+import { currentUserID } from '../../../firebaseConfig';
 
 export type CustomChatProps = {
     onSend: (message: any) => void,
-    messages: Array<any>
+    messages: Array<any>,
+    userAvatar?: string
 }
 
 
-export default function index({ messages, onSend }: CustomChatProps) {
+export default function index({ messages, onSend, userAvatar }: CustomChatProps) {
     const renderInputToolbar = (props: InputToolbarProps) => {
         return <InputToolbar {...props} containerStyle={styles.inputContainer} renderSend={renderSend} />
     }
@@ -27,7 +29,7 @@ export default function index({ messages, onSend }: CustomChatProps) {
 
     const renderBubble = (props: BubbleProps<any>) => {
         let messageBelongsToCurrentUser = props.user?._id == props.currentMessage.user._id;
-        return <ChatMessage message={props.currentMessage} prevMessage={sameUserInPrevMessage(props.currentMessage._id, props.currentMessage.user._id)} isMyMessage={messageBelongsToCurrentUser} />
+        return <ChatMessage userAvatar={userAvatar} message={props.currentMessage} prevMessage={sameUserInPrevMessage(props.currentMessage._id, props.currentMessage.user._id)} isMyMessage={messageBelongsToCurrentUser} />
     }
 
     const renderSend = (props: any) => {
@@ -47,7 +49,7 @@ export default function index({ messages, onSend }: CustomChatProps) {
             messages={messages}
             onSend={(messages: any) => onSend(messages)}
             user={{
-                _id: 1,
+                _id: currentUserID,
             }}
             messagesContainerStyle={{ paddingHorizontal: '5%' }}
             renderBubble={renderBubble}
