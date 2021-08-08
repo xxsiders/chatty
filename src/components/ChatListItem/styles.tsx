@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
     username: {
         fontSize: Layout.fonts.h3,
         fontWeight: 'bold',
-        color: Colors.foruth
+        color: Colors.foruth,
+        textTransform: 'capitalize'
     },
     message: {
         fontSize: Layout.fonts.h5,
