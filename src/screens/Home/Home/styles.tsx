@@ -25,6 +25,9 @@ const styles = StyleSheet.create({
         marginHorizontal: '10%',
         marginBottom: 16,
     },
+    loader: {
+        marginVertical: '50%'
+    }
 })
 
 export default styles
