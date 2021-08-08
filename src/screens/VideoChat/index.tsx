@@ -1,4 +1,4 @@
-import VideoChat from './VideoChatHOC'
+import VideoChat from './VideoChat'
 import VideoChatHOC from './VideoChatHOC'
 
 export default VideoChatHOC(VideoChat)
