@@ -1,10 +1,11 @@
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
 import { firebase } from '../../../firebaseConfig';
 import { useRefresh } from "../../hooks/RefreshProvider";
 
 const index = (Com: React.ComponentType<any>) => {
     const wrapper = (props: any) => {
+        const { navigate }: any = useNavigation()
         const [messages, setMessages]: any = useState([]);
         const [videoCallActive, setVideoCallActive]: any = useState(false);
         const { params }: any = useRoute()
@@ -36,6 +37,14 @@ const index = (Com: React.ComponentType<any>) => {
             }
         }, [])
 
+        const startVideoCall = () => {
+            firebase.firestore().collection('chatRoom').doc(params.chatRoom?.id).update({
+                videoWaiting: true
+            }).then(() => navigate('VideoChat', {
+                chatRoom: params.chatRoom
+            }))
+        }
+
         return <Com
             {...props}
             messages={messages}
@@ -43,6 +52,7 @@ const index = (Com: React.ComponentType<any>) => {
             onSend={onSend}
             params={params}
             videoCallActive={videoCallActive}
+            startVideoCall={startVideoCall}
         />
     }
     return wrapper

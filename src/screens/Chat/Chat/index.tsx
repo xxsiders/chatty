@@ -14,11 +14,12 @@ export type ChatProps = {
     params: {
         chatRoom: ChatRoom
     },
-    videoCallActive: boolean
+    videoCallActive: boolean,
+    startVideoCall: () => void
 }
 
 export default function index(props: ChatProps) {
-    const { goBack } = useNavigation()
+    const { goBack }: any = useNavigation()
     return (
         <View style={styles.container}>
             <View style={[styles.headerContainer, { paddingTop: useSafeAreaInsets().top + 6 }]}>
@@ -37,7 +38,7 @@ export default function index(props: ChatProps) {
                         <TouchableOpacity style={styles.searchIcon}>
                             <Ionicons name='call' size={20} color={Colors.white} />
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.searchIcon, props.videoCallActive && { backgroundColor: '#e74c3c' }]}>
+                        <TouchableOpacity onPress={props.startVideoCall} style={[styles.searchIcon, props.videoCallActive && { backgroundColor: '#e74c3c' }]}>
                             <Ionicons name='videocam' size={20} color={Colors.white} />
                         </TouchableOpacity>
                     </View>
