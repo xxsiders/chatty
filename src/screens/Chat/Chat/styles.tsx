@@ -37,9 +37,23 @@ const styles = StyleSheet.create({
         color: Colors.white,
         fontWeight: 'bold',
         width: 180,
-        marginHorizontal: '6%',
         marginVertical: 12,
+        textTransform: 'capitalize'
     },
+    contentBlock: {
+        flexDirection: Layout.styles.flexDirection,
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    searchIcon: {
+        marginLeft: 4,
+        width: 35,
+        height: 35,
+        backgroundColor: '#ffffff55',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 40
+    }
 })
 
 export default styles

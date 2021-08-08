@@ -1,13 +1,20 @@
+import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { ChatRoom } from '../../../../Types'
 import CustomChat from '../../../components/CustomChat'
+import Colors from '../../../constants/Colors'
 import styles from './styles'
 
 export type ChatProps = {
     onSend: (message: any) => void,
-    messages: Array<any>
+    messages: Array<any>,
+    params: {
+        chatRoom: ChatRoom
+    },
+    videoCallActive: boolean
 }
 
 export default function index(props: ChatProps) {
@@ -23,11 +30,22 @@ export default function index(props: ChatProps) {
                         <Text style={styles.optionButton}>Search</Text>
                     </TouchableOpacity>
                 </View>
-                <Text style={styles.title}>Username</Text>
+                <View style={[styles.contentBlock, { marginHorizontal: '5%' }]}>
+                    <Text style={styles.title}>{props.params.chatRoom.user?.name}</Text>
+
+                    <View style={styles.contentBlock}>
+                        <TouchableOpacity style={styles.searchIcon}>
+                            <Ionicons name='call' size={20} color={Colors.white} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.searchIcon, props.videoCallActive && { backgroundColor: '#e74c3c' }]}>
+                            <Ionicons name='videocam' size={20} color={Colors.white} />
+                        </TouchableOpacity>
+                    </View>
+                </View>
             </View>
 
             <View style={styles.contentContainer}>
-                <CustomChat messages={props.messages} onSend={props.onSend} />
+                <CustomChat userAvatar={props.params.chatRoom.user?.avatar} messages={props.messages} onSend={props.onSend} />
             </View>
         </View>
     )
