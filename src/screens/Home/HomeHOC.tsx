@@ -1,5 +1,7 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { firebase, currentUserID } from '../../../firebaseConfig'
+import { User } from "../../../Types";
 import { useRefresh } from "../../hooks/RefreshProvider";
 
 const index = (Com: React.ComponentType<any>) => {
@@ -8,6 +10,7 @@ const index = (Com: React.ComponentType<any>) => {
         const [usersList, setUsersList]: any = useState([])
         const [loading, setLoading] = useState(true)
         const { refreshing, setrefreshing }: any = useRefresh()
+        const { navigate }: any = useNavigation()
 
         const fetchChatList = async () => {
             const response = await firebase.firestore().collection('chatRoom').orderBy('lastMessageDate', 'desc').where('users', 'array-contains', currentUserID).get()
@@ -45,11 +48,29 @@ const index = (Com: React.ComponentType<any>) => {
             }
         }, [refreshing])
 
+        const createChatRoom = (user: User) => {
+
+            const roomData = {
+                createdAt: firebase.firestore.Timestamp.now(),
+                lastMessageDate: firebase.firestore.Timestamp.now(),
+                lasteMessage: '',
+                users: [user.uid, currentUserID],
+                videoWaiting: false,
+                id: ''
+            }
+            firebase.firestore().collection('chatRoom').add(roomData).then(response => firebase.firestore().collection('chatRoom').doc(response.id).update({ id: response.id }).then(() => {
+                navigate('Chat', {
+                    chatRoom: { ...roomData, id: response.id, user }
+                })
+            }))
+        }
+
         return <Com
             {...props}
             chatList={chatList}
             loading={loading}
             usersList={usersList}
+            createChatRoom={createChatRoom}
         />
     }
     return wrapper
